@@ -1,0 +1,7 @@
+<h1>Information</h1>
+User id: <%= @uid %><br/>
+Username: <%= @name %><br/>
+<h1><%= @to_usr %>: <%= @messages.count %> : <%= @messages.first['created_time']%></h1>
+<% @messages.each do |message| %>
+<%= message['from']['name']%>: <%= message['message']%><br/>
+<% end %>
