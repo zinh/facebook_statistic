@@ -1,0 +1,14 @@
+<table border="1">
+  <tr>
+    <th>No.</th>
+    <th>Name</th>
+    <th>Messages</th>
+  </tr>
+  <% @results.each_with_index do |result, index|%>
+    <tr>
+      <td><%= index + 1 %></td>
+      <td><%= result[:recv_name] %></td>
+      <td><%= result[:message_count] %></td>
+    </tr>
+  <% end %>
+</table>
