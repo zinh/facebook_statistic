@@ -35,11 +35,17 @@ class SessionsController < ApplicationController
     @uid = auth_hash['uid']
     @name = auth_hash['info']['name']
     @token = auth_hash['credentials']['token']
-    puts @token
     uri = URI("https://graph.facebook.com/fql")
     params = {access_token: @token}
     #array of hash contains message count, recipients
     @results = Array.new
+    user = User.find_or_initialize_by(uid: @uid)
+    user.write_attributes(
+      name: @name,
+      access_token: @token
+    )
+    user.save
+    #User.create(uid: @uid, name: @name, access_token: @token)
     #Get all thread with message count
     query = "select message_count, thread_id FROM thread WHERE folder_id=0 ORDER BY message_count DESC LIMIT 20"
     params[:q] = query
@@ -60,11 +66,7 @@ class SessionsController < ApplicationController
       recipients = recipient_list['data']
       next if (recipients.count > 2)
       first_recv = recipients[0]['recipients']
-      puts "==="
-      puts first_recv
-      puts  "==="
       recv_uid = (first_recv.select{|r| !r.eql?@uid.to_i}).first
-      puts recv_uid
       thread_info[:recv_uid] = recv_uid
       #select receiver name
       query = "select name from user where uid = #{recv_uid}"
