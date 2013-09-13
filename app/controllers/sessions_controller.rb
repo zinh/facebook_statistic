@@ -80,8 +80,8 @@ class SessionsController < ApplicationController
         user_name = user_info['data'][0]['name'] 
         thread_info[:recv_name] = user_name
         @results.push(thread_info)
-      end
-    end
+      end#if
+    end#each
   end#get_messsage_raking
 
   protected
